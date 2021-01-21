@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class EmailValidationBehavior : Behavior<Entry>
+    public class EmailValidationBehavior : BaseEntryBehavior
     {
         private static Color DefaultColor = Color.Default;
 
@@ -24,11 +24,11 @@ namespace Xamarin.Forms.BehaviorValidationPack
         }
 
         void Bindable_Unfocused(object sender, FocusEventArgs e)
-        {
-            bool IsValid = false;
-            IsValid = Validators.EmailValidator(((Entry)sender).ValidatedText());
-            ((Entry)sender).TextColor = IsValid ? DefaultColor : Color.Red;
-
+        {            
+            string textValue = ((Entry)sender).ValidatedText();
+            bool isValid = IsRequired ? !string.IsNullOrWhiteSpace(textValue) : true;
+            IsValid = Validators.EmailValidator(textValue) && isValid;
+            ((Entry)sender).TextColor = IsValid ? DefaultColor : ErrorColor;
         }
 
     }

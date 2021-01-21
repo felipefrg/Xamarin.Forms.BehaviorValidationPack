@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class CompareValidationBehavior : Behavior<Entry>
+    public class CompareValidationBehavior : BaseEntryBehavior
     {
 
         private static Color DefaultColor = Color.Default;
@@ -40,11 +40,9 @@ namespace Xamarin.Forms.BehaviorValidationPack
         }
 
         void Bindable_Unfocused(object sender, FocusEventArgs e)
-        {
-            bool IsValid = false;
+        {            
             IsValid = ((Entry)sender).ValidatedText() == Text;
-
-            ((Entry)sender).TextColor = IsValid ? DefaultColor : Color.Red;
+            ((Entry)sender).TextColor = IsValid ? DefaultColor : ErrorColor;
         }
     }
     

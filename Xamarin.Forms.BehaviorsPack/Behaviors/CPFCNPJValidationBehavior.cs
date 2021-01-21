@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class CPFCNPJValidationBehavior : Behavior<Entry>
+    public class CPFCNPJValidationBehavior : BaseEntryBehavior
     {
         private static Color DefaultColor = Color.Default;
 
@@ -26,8 +26,10 @@ namespace Xamarin.Forms.BehaviorValidationPack
 
         void Bindable_Unfocused(object sender, FocusEventArgs e)
         {
-            bool IsValid = Validators.CpfCnpjValidator(((Entry)sender).ValidatedText());
-            ((Entry)sender).TextColor = IsValid ? DefaultColor : Color.Red;
+            string textValue = ((Entry)sender).ValidatedText();
+            bool isValid = IsRequired ? !string.IsNullOrWhiteSpace(textValue) : true;
+            IsValid = Validators.CpfCnpjValidator(textValue) && isValid;
+            ((Entry)sender).TextColor = IsValid ? DefaultColor : ErrorColor;
         }
     }
 }

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class CEPValidationBehavior : Behavior<Entry>
+    public class CEPValidationBehavior : BaseEntryBehavior
     {
         private static Color DefaultColor = Color.Default;
 
@@ -25,10 +22,10 @@ namespace Xamarin.Forms.BehaviorValidationPack
 
         void Bindable_Unfocused(object sender, FocusEventArgs e)
         {
-            bool IsValid = false;
-            IsValid = Validators.CepValidator(((Entry)sender).ValidatedText());
-            ((Entry)sender).TextColor = IsValid ? DefaultColor : Color.Red;
-
+            string textValue = ((Entry)sender).ValidatedText();
+            bool isValid = IsRequired ? !string.IsNullOrWhiteSpace(textValue) : true;
+            IsValid = Validators.CepValidator(textValue) && isValid;
+            ((Entry)sender).TextColor = IsValid ? DefaultColor : ErrorColor;
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class MaxLengthValidationBehavior : Behavior<Entry>
+    public class MaxLengthValidationBehavior : BaseEntryBehavior
     {
         public static readonly BindableProperty MaxLengthProperty = 
             BindableProperty.Create("MaxLength", typeof(int), typeof(MaxLengthValidationBehavior), 0);

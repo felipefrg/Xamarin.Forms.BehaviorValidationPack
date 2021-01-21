@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
@@ -11,7 +11,7 @@ namespace Xamarin.Forms.BehaviorValidationPack
     //at least 1 lowercase letter
     //at least 1 uppercase letter
     //at least 1 special character
-    public class PasswordValidationBehavior : Behavior<Entry>
+    public class PasswordValidationBehavior : BaseEntryBehavior
     {
         const string passwordRegex = @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$";
 
@@ -26,9 +26,10 @@ namespace Xamarin.Forms.BehaviorValidationPack
 
         void Bindable_Unfocused(object sender, FocusEventArgs e)
         {
-            bool IsValid = false;
-            IsValid = Validators.PasswordValidator(((Entry)sender).ValidatedText());
-            ((Entry)sender).TextColor = IsValid ? DefaultColor : Color.Red;
+            string textValue = ((Entry)sender).ValidatedText();
+            bool isValid = IsRequired ? !string.IsNullOrWhiteSpace(textValue) : true;
+            IsValid = Validators.PasswordValidator(textValue) && isValid;
+            ((Entry)sender).TextColor = IsValid ? DefaultColor : ErrorColor;
         }
 
         protected override void OnDetachingFrom(Entry bindable)

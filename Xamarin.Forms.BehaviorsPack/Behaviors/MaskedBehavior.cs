@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using System.Collections.Generic;
+using Xamarin.Forms.BehaviorValidationPack.Behaviors;
 
 namespace Xamarin.Forms.BehaviorValidationPack
 {
-    public class MaskedBehavior : Behavior<Entry>
+    public class MaskedBehavior : BaseEntryBehavior
     {
         private string _mask = "";
         public string Mask

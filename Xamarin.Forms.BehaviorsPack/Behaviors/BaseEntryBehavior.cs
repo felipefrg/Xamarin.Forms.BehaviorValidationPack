@@ -10,7 +10,7 @@ namespace Xamarin.Forms.BehaviorValidationPack.Behaviors
            BindableProperty.Create(nameof(IsValid)
                , typeof(bool)
                , typeof(BaseEntryBehavior)
-               , false
+               , true
                , BindingMode.TwoWay);
 
         public bool IsValid

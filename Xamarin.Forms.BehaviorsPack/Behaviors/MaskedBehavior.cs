@@ -5,6 +5,15 @@ namespace Xamarin.Forms.BehaviorValidationPack
 {
     public class MaskedBehavior : BaseEntryBehavior
     {
+        public static readonly BindableProperty ClearIfUnmatchProperty =
+           BindableProperty.Create(nameof(ClearIfUnmatch), typeof(bool), typeof(MaskedBehavior), false);
+
+        public bool ClearIfUnmatch
+        {
+            get { return (bool)GetValue(ClearIfUnmatchProperty); }
+            set { SetValue(ClearIfUnmatchProperty, value); }
+        }
+
         private string _mask = "";
         public string Mask
         {
@@ -19,12 +28,14 @@ namespace Xamarin.Forms.BehaviorValidationPack
         protected override void OnAttachedTo(Entry entry)
         {
             entry.TextChanged += OnEntryTextChanged;
+            entry.Unfocused += Entry_Unfocused;
             base.OnAttachedTo(entry);
         }
 
         protected override void OnDetachingFrom(Entry entry)
         {
             entry.TextChanged -= OnEntryTextChanged;
+            entry.Unfocused -= Entry_Unfocused;
             base.OnDetachingFrom(entry);
         }
 
@@ -44,6 +55,18 @@ namespace Xamarin.Forms.BehaviorValidationPack
                     list.Add(i, Mask[i]);
 
             _positions = list;
+        }
+
+        private void Entry_Unfocused(object sender, FocusEventArgs e)
+        {
+            if (ClearIfUnmatch)
+            {
+                string text = ((Entry)sender).ValidatedText();
+                if (text.Length != Mask.Length)
+                {
+                    ((Entry)sender).Text = string.Empty;
+                }
+            }
         }
 
         private void OnEntryTextChanged(object sender, TextChangedEventArgs args)

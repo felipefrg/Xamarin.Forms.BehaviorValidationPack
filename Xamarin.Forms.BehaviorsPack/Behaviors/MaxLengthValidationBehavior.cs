@@ -8,7 +8,7 @@ namespace Xamarin.Forms.BehaviorValidationPack
     public class MaxLengthValidationBehavior : BaseEntryBehavior
     {
         public static readonly BindableProperty MaxLengthProperty = 
-            BindableProperty.Create("MaxLength", typeof(int), typeof(MaxLengthValidationBehavior), 0);
+            BindableProperty.Create("MaxLength", typeof(int), typeof(MinLengthValidationBehavior), 0);
 
         public int MaxLength
         {

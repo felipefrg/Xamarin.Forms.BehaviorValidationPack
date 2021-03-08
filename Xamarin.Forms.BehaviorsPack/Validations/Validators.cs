@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -17,7 +18,7 @@ namespace Xamarin.Forms.BehaviorValidationPack
 
             return (Regex.IsMatch(cep, cepRegex, RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250)));
         }
-
+            
         public static bool CpfValidator(string cpf)
         {
             if (string.IsNullOrEmpty(cpf)) {
@@ -131,7 +132,7 @@ namespace Xamarin.Forms.BehaviorValidationPack
             DateTime value = date;
             int year = DateTime.Now.Year;
             int selyear = value.Year;
-            int result = selyear - year;
+            int result = year - selyear;
             bool isValid = false;
             if (result <= 100 && result > 0)
             {
@@ -141,12 +142,26 @@ namespace Xamarin.Forms.BehaviorValidationPack
             return isValid;
         }
 
+        public static bool DateStringValidator(string datestring, string dateFormat = "dd/MM/yyyy", CultureInfo cultureInfo = null)
+        {
+            cultureInfo = cultureInfo ?? new CultureInfo("pt-BR");
+            DateTime birthDateAux;
+            if (DateTime.TryParseExact(datestring, dateFormat, cultureInfo, DateTimeStyles.None, out birthDateAux))
+            {
+                return DateValidator(birthDateAux);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static bool PasswordValidator(string password)
         {
             if (string.IsNullOrEmpty(password))
                 return true;
 
-            string passwordRegex = @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$";
+            string passwordRegex = @"^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{6,}$";
             return (Regex.IsMatch(password, passwordRegex));
         }
 
